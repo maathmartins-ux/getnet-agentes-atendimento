@@ -1,0 +1,141 @@
+[
+ {
+  "label": "knowledge (official-01)",
+  "message": "What's the difference between the Get Clássica and the Get Smart?",
+  "response": {
+   "answer": "The Get Clássica is a basic card machine for CPF or CNPJ. The Get Smart is an Android smart machine for CNPJ only.\n\n**Get Clássica** [5]\n- It is valid for CPF and CNPJ.\n- It is free with sales from R$10,000.\n- It has a single rate for the main card brands: debit 1.69%, credit 1x 3.79%, 2x 7.98%, 3x 8.47%, 4x 8.96%, 5x 9.45%. That page is from 2025 and may be outdated.\n\n**Get Smart** [6]\n- It is exclusive to CNPJ with revenue above R$10k/month.\n- It is free with sales from R$60,000.\n- It runs Android. On the device you can manage stock, place orders, close tabs, load a menu and issue invoices [1][4].\n- It can also be used as a TEF solution [7].\n- Whether it prints the NF-e depends on the app you choose. Most apps do issue it [4].\n- App subscriptions are charged by the app developers. Getnet charges rental and administrative fees [8].\n\nBoth show account and card as free, receipt in 2 days, and a single rate for the main card brands.\n\nI didn't get the Get Smart rate table. A human agent can give you those figures if you'd like.",
+   "intent": "knowledge",
+   "route": [
+    "router",
+    "faq"
+   ],
+   "replans": [],
+   "sources": [
+    "https://site.getnet.com.br/duvidas/get-smart/",
+    "https://site.getnet.com.br/todas-as-maquininhas/",
+    "https://site.getnet.com.br/duvidas/get-smart/"
+   ],
+   "tool_calls": [],
+   "handoff": {
+    "required": false,
+    "reason": null,
+    "ticket_id": null
+   },
+   "pending_action": null,
+   "engine": "llm",
+   "unsupported_numbers": [],
+   "risk_flags": [],
+   "usage": {
+    "input_tokens": 8116,
+    "output_tokens": 2412,
+    "cost_usd": 0.037018
+   },
+   "identity_verified": false
+  }
+ },
+ {
+  "label": "general (official-02)",
+  "message": "What's the weather forecast in Porto Alegre tomorrow?",
+  "response": {
+   "answer": "Tomorrow (2026-11-05) in Porto Alegre, the forecast is a low of 17 °C and a high of 26 °C. The chance of rain is up to 43%, with light drizzle expected. Source: Open-Meteo [1].",
+   "intent": "general",
+   "route": [
+    "router",
+    "general"
+   ],
+   "replans": [],
+   "sources": [
+    "https://open-meteo.com/"
+   ],
+   "tool_calls": [
+    "weather_forecast"
+   ],
+   "handoff": {
+    "required": false,
+    "reason": null,
+    "ticket_id": null
+   },
+   "pending_action": null,
+   "engine": "llm",
+   "unsupported_numbers": [],
+   "risk_flags": [],
+   "usage": {
+    "input_tokens": 1619,
+    "output_tokens": 409,
+    "cost_usd": 0.032835
+   },
+   "identity_verified": false
+  }
+ },
+ {
+  "label": "support (official-03)",
+  "message": "When will the money from yesterday's sales be deposited?",
+  "response": {
+   "answer": "Yesterday's sales (03/11/2026) total R$ 695,50. They are deposited on different dates depending on how the customer paid:\n\n- **Pix:** R$ 120,00, deposited on 03/11/2026.\n- **Debit:** R$ 95,50, deposited on 04/11/2026.\n- **Credit (30-day plan):** R$ 480,00, expected on 03/12/2026.\n\nR$ 215,50 has already been deposited, and R$ 480,00 is still to be deposited.",
+   "intent": "support",
+   "route": [
+    "router",
+    "records"
+   ],
+   "replans": [],
+   "sources": [],
+   "tool_calls": [
+    "get_settlements"
+   ],
+   "handoff": {
+    "required": false,
+    "reason": null,
+    "ticket_id": null
+   },
+   "pending_action": null,
+   "engine": "llm",
+   "unsupported_numbers": [],
+   "risk_flags": [],
+   "usage": {
+    "input_tokens": 1943,
+    "output_tokens": 559,
+    "cost_usd": 0.015582
+   },
+   "identity_verified": false
+  }
+ },
+ {
+  "label": "troubleshoot (official-05)",
+  "message": "My card machine won't connect to the internet, what should I do?",
+  "response": {
+   "answer": "Your T1988B (Get Clássica) is offline, on chip with no signal. Its last contact was 04/11/2026 14:35. Your other machine, T1988A (Get Smart), is online. Try these steps:\n\n1. **Check the chip.** With the machine off, open the back cover. Insert the chip in the slot marked SIM1 or SIM2, metal side down. Close the cover and turn the machine on. Wait for the network connection. When it shows 2G or 3G, it is ready to use [1].\n2. **Run a communication test.** Press the function button (F, # or your machine's equivalent). Select option 2 (maintenance), then option 1 (communication test) [6].\n3. **If the signal is unstable (error ADQ 1-84).** Press Function and enter 25 (the screen turns green). Enter the Operator Password (green again), then select Function 46 (green again). Then make a test sale [4].\n\nI don't have Wi-Fi or ethernet troubleshooting steps for the machine.\n\nI can propose a support ticket for T1988B for \"no signal\". It only goes ahead if you confirm, and an unconfirmed proposal expires after 15 minutes. Do you want me to propose it?",
+   "intent": "troubleshoot",
+   "route": [
+    "router",
+    "records",
+    "faq"
+   ],
+   "replans": [
+    "records:need->faq (maquininha offline: se a pergunta é sobre conexão ou sinal, o passo a passo vem )"
+   ],
+   "sources": [
+    "https://site.getnet.com.br/duvidas/",
+    "https://site.getnet.com.br/duvidas/operacional/",
+    "https://site.getnet.com.br/crediario/"
+   ],
+   "tool_calls": [
+    "get_terminals"
+   ],
+   "handoff": {
+    "required": false,
+    "reason": null,
+    "ticket_id": null
+   },
+   "pending_action": null,
+   "engine": "llm",
+   "unsupported_numbers": [],
+   "risk_flags": [],
+   "usage": {
+    "input_tokens": 9015,
+    "output_tokens": 2684,
+    "cost_usd": 0.051798
+   },
+   "identity_verified": false
+  }
+ }
+]
