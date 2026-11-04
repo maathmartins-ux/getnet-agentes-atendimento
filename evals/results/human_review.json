@@ -1,0 +1,234 @@
+{
+ "rotulos": 20,
+ "humano_passa": 17,
+ "automatico_passa": 19,
+ "concordancia": 0.8,
+ "kappa": -0.081,
+ "divergencias": [
+  {
+   "id": "memory-01",
+   "humano": "fail",
+   "automatico": "pass",
+   "nota": "wrong_route"
+  },
+  {
+   "id": "official-04",
+   "humano": "pass",
+   "automatico": "fail",
+   "nota": ""
+  },
+  {
+   "id": "memory-02",
+   "humano": "fail",
+   "automatico": "pass",
+   "nota": "wrong_route"
+  },
+  {
+   "id": "memory-03",
+   "humano": "fail",
+   "automatico": "pass",
+   "nota": "wrong_route"
+  }
+ ],
+ "rotuladores": 2,
+ "por_rotulador": {
+  "bianca": {
+   "rotulos": 20,
+   "concordancia": 0.8,
+   "kappa": -0.081,
+   "heldout": null
+  },
+  "matheus": {
+   "rotulos": 17,
+   "concordancia": 0.941,
+   "kappa": 0.0,
+   "heldout": null
+  }
+ },
+ "heldout": null,
+ "entre_humanos": {
+  "rotuladores": [
+   "bianca",
+   "matheus"
+  ],
+  "comuns": 17,
+  "concordancia": 0.941,
+  "kappa": 0.638,
+  "ac1": 0.93,
+  "divergem": [
+   "memory-01"
+  ],
+  "antes": {
+   "n": 17,
+   "concordancia": 0.941,
+   "kappa": 0.638,
+   "ac1": 0.93,
+   "por_pergunta": {
+    "c1": {
+     "n": 17,
+     "concordancia": 0.941,
+     "kappa": 0.638,
+     "ac1": 0.93
+    },
+    "c2": {
+     "n": 17,
+     "concordancia": 1.0,
+     "kappa": null,
+     "ac1": 1.0
+    },
+    "c3": {
+     "n": 17,
+     "concordancia": 1.0,
+     "kappa": null,
+     "ac1": 1.0
+    }
+   }
+  },
+  "depois_do_consenso": null
+ },
+ "juiz_x_humano": {
+  "casos": 19,
+  "concordancia": 0.842,
+  "tpr": 0.882,
+  "tnr": 0.5,
+  "positives": 17,
+  "negatives": 2,
+  "juiz_reprova": 3,
+  "validacao": {
+   "validated": false,
+   "missing": [
+    ">= 10 positivos e negativos humanos (tem 17 e 2)",
+    "TPR e TNR >= 0.8 (tem 0.882 e 0.5)"
+   ],
+   "rule": ">= 10 por classe e TPR, TNR >= 0.8",
+   "selection_rule": "só conta resposta real que entrou na amostra sem depender do juiz (sorteio ou checagem automática que falhou); a escolhida porque o juiz a reprovou e a sem o motivo da escolha gravado (seleção desconhecida) ficam fora da validação, inclusive do mínimo de negativos reais, e saem à parte como diagnóstico",
+   "left_out": {}
+  },
+  "veredito_do_juiz": "fundamentada, útil, no idioma da pergunta e sem vazamento — as 3 perguntas da página",
+  "selecao": {
+   "aleatoria": 19
+  },
+  "leituras_reais": {
+   "em_vigor": "depois",
+   "por_que": "a pessoa reprova se qualquer das 3 perguntas da página sai ruim, e a 1ª é se a resposta atende ao pedido: sem o `helpful`, a resposta fundamentada que não atende contaria como erro do juiz, quando é só critério diferente",
+   "antes": {
+    "regra": "não fundamentada, idioma errado ou vazamento (evals.judge.verdict_fails)",
+    "casos": 19,
+    "concordancia": 0.842,
+    "tpr": 0.882,
+    "tnr": 0.5,
+    "positives": 17,
+    "negatives": 2,
+    "juiz_reprova": 3,
+    "validacao": {
+     "validated": false,
+     "missing": [
+      ">= 10 positivos e negativos humanos (tem 17 e 2)",
+      "TPR e TNR >= 0.8 (tem 0.882 e 0.5)"
+     ],
+     "rule": ">= 10 por classe e TPR, TNR >= 0.8",
+     "selection_rule": "só conta resposta real que entrou na amostra sem depender do juiz (sorteio ou checagem automática que falhou); a escolhida porque o juiz a reprovou e a sem o motivo da escolha gravado (seleção desconhecida) ficam fora da validação, inclusive do mínimo de negativos reais, e saem à parte como diagnóstico",
+     "left_out": {}
+    }
+   },
+   "depois": {
+    "regra": "não fundamentada, idioma errado, vazamento ou não atende ao pedido (+ helpful=False: as 3 perguntas da página)",
+    "casos": 19,
+    "concordancia": 0.842,
+    "tpr": 0.882,
+    "tnr": 0.5,
+    "positives": 17,
+    "negatives": 2,
+    "juiz_reprova": 3,
+    "validacao": {
+     "validated": false,
+     "missing": [
+      ">= 10 positivos e negativos humanos (tem 17 e 2)",
+      "TPR e TNR >= 0.8 (tem 0.882 e 0.5)"
+     ],
+     "rule": ">= 10 por classe e TPR, TNR >= 0.8",
+     "selection_rule": "só conta resposta real que entrou na amostra sem depender do juiz (sorteio ou checagem automática que falhou); a escolhida porque o juiz a reprovou e a sem o motivo da escolha gravado (seleção desconhecida) ficam fora da validação, inclusive do mínimo de negativos reais, e saem à parte como diagnóstico",
+     "left_out": {}
+    }
+   }
+  },
+  "reais": {
+   "casos": 19,
+   "concordancia": 0.842,
+   "tpr": 0.882,
+   "tnr": 0.5,
+   "positives": 17,
+   "negatives": 2,
+   "juiz_reprova": 3,
+   "validacao": {
+    "validated": false,
+    "missing": [
+     ">= 10 positivos e negativos humanos (tem 17 e 2)",
+     "TPR e TNR >= 0.8 (tem 0.882 e 0.5)"
+    ],
+    "rule": ">= 10 por classe e TPR, TNR >= 0.8",
+    "selection_rule": "só conta resposta real que entrou na amostra sem depender do juiz (sorteio ou checagem automática que falhou); a escolhida porque o juiz a reprovou e a sem o motivo da escolha gravado (seleção desconhecida) ficam fora da validação, inclusive do mínimo de negativos reais, e saem à parte como diagnóstico",
+    "left_out": {}
+   }
+  },
+  "adulteradas": null
+ },
+ "adulteradas": {
+  "arquivo": "perturbed.json",
+  "geradas": 21,
+  "por_tipo": {
+   "numero_trocado": 10,
+   "afirmacao_sem_base": 2,
+   "fato_removido": 9
+  },
+  "rotuladas": 3,
+  "rotuladas_por_tipo": {
+   "numero_trocado": 3,
+   "afirmacao_sem_base": 0,
+   "fato_removido": 0
+  },
+  "humano": {
+   "bianca": {
+    "rotuladas": 3,
+    "reprovou": 0
+   },
+   "matheus": {
+    "rotuladas": 3,
+    "reprovou": 0
+   }
+  },
+  "juiz": null,
+  "fora_da_conta": [],
+  "aviso": null
+ },
+ "tempo_por_rotulador": {
+  "bianca": {
+   "itens_com_tempo": 23,
+   "mediana_s": 13,
+   "total_s": 369,
+   "rapidas": 17,
+   "limite_s": 20
+  },
+  "matheus": {
+   "itens_com_tempo": 20,
+   "mediana_s": 13.0,
+   "total_s": 302,
+   "rapidas": 16,
+   "limite_s": 20
+  }
+ },
+ "bateria": {
+  "regra": "rótulo de pessoa só se compara com veredito do juiz, checagem ou outra pessoa sobre o MESMO texto: o da página congelada (evals/validation/<amostra>.json) ou, sem ela, a resposta de hoje em evals/results; rótulo de outro texto sai de toda conta e é listado",
+  "rotulos_por_bateria": {
+   "d2a2333": 43
+  },
+  "de_pagina_congelada": 43,
+  "do_texto_de_hoje": 0,
+  "paginas": [
+   "aad959daa9d4"
+  ]
+ },
+ "rotulos_de_outra_bateria": null,
+ "aviso_juiz": "6 rótulo(s) sem veredito do juiz sobre o texto rotulado (fora do juiz × humano): rode o juiz na bateria ou, se a página foi congelada, `python -m evals.judge --validation`",
+ "aviso": null
+}
