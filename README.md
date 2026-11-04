@@ -24,16 +24,17 @@ tabelas completas, em [docs/RESULTS.md](docs/RESULTS.md); o que veio do kit, em 
 <!-- scorecard:begin -->
 | medida | valor | como se mede |
 |---|---:|---|
-| Oficiais resolvidas (sem humano + todo fato + fonte + juiz: fundamentada) | 1.00 | resposta sem humano, com todo fato de referência do cenário, com fonte e que o juiz diz fundamentada (os 10 do enunciado; a regex sozinha não basta) |
-| Oficiais resolvidas: pass^k (todas as rodadas, com o juiz) | 1.00 | o mesmo, em todas as rodadas de cada cenário |
-| Juiz: respostas oficiais fundamentadas | 1.00 | juiz LLM com o texto das fontes: cada afirmação apoiada nelas |
-| Juiz: respostas oficiais úteis (helpful) | 1.00 | juiz LLM: a resposta resolve o que o lojista perguntou |
-| Memória ao vivo: pass@1 | 0.81 | conversas de vários turnos: o fato do turno anterior chega à resposta |
+| Oficiais resolvidas por completo (sem humano + todo fato + fonte + juiz: fundamentada; parcial fora) | 0.80 | resposta sem humano, com todo fato de referência do cenário, com fonte, que o juiz diz fundamentada e sem passo parcial (os 10 do enunciado; a regex sozinha não basta) |
+| Oficiais resolvidas: pass^k (todas as rodadas, com o juiz) | 0.70 | o mesmo, em todas as rodadas de cada cenário |
+| Oficiais resolvidas só em parte (resposta parcial; fora da manchete) | 0.07 | resolvida sem humano, mas com um passo parcial (a resposta diz o que a fonte não cobre): honesta, fora da manchete; somada a ela dá a fração com resposta útil em parte |
+| Juiz: respostas oficiais fundamentadas | 0.90 | juiz LLM com o texto das fontes: cada afirmação apoiada nelas |
+| Juiz: respostas oficiais úteis (helpful) | 0.93 | juiz LLM: a resposta resolve o que o lojista perguntou |
+| Memória ao vivo: pass@1 | 0.96 | conversas de vários turnos: o fato do turno anterior chega à resposta |
 | Humano no laço: resposta do operador no mesmo turno (split hitl) | 1.00 | operadora simulada responde o caso aberto no turno dentro da espera: a resposta dela e os passos pendentes saem no mesmo turno (a que chega depois vai pela retomada, uma vez só) |
 | Busca: Recall@3 | 0.89 | perguntas rotuladas olhando a fonte: a página certa entre as 3 primeiras |
-| Busca: MRR | 0.89 | posição média da primeira página certa (1 = sempre em primeiro) |
-| Turnos resolvidos sem humano (ao vivo, todos os splits) | 0.78 | todas as execuções ao vivo, de todos os splits: resposta sem pedir humano, sem erro e, se julgada, fundamentada pelo juiz (recusa do guardrail conta; o fato se confere só nas oficiais resolvidas) |
-| Custo por turno resolvido sem humano (ao vivo) | US$ 0.0303 | gasto ao vivo de todos os splits (inclusive turnos que foram ao humano e turnos anteriores das conversas) ÷ as execuções resolvidas da linha acima |
+| Busca: MRR | 0.90 | posição média da primeira página certa (1 = sempre em primeiro) |
+| Turnos resolvidos sem humano (ao vivo, todos os splits) | 0.82 | todas as execuções ao vivo, de todos os splits: resposta sem pedir humano, sem erro e, se julgada, fundamentada pelo juiz (recusa do guardrail conta; o fato se confere só nas oficiais resolvidas) |
+| Custo por turno resolvido sem humano (ao vivo) | US$ 0.0341 | gasto ao vivo de todos os splits (inclusive turnos que foram ao humano e turnos anteriores das conversas) ÷ as execuções resolvidas da linha acima |
 <!-- scorecard:end -->
 
 ### 0.1 Mapeamento do desafio
@@ -169,7 +170,7 @@ No desafio Getnet a divisão ganha um 4º especialista, `general` (tools `weathe
 - **Storage**: trechos em JSONL versionado em `data/` (id, URL, `fetched_at`, sha256); vetores do denso em cache no
   disco.
 <!-- retriever:begin -->
-- **Retrieval** (`src/app/rag.py`; frase gerada de `KIT_RETRIEVER` por `scripts/fill_readme.py`): `dense+windows+cross:base`: denso `multilingual-e5-large` + cross-encoder `bge-reranker-v2-m3-int8` (top-10, 600 caracteres por trecho) — ordem do denso; nota do cross só no portão sem fonte: o redator lê os trechos na ordem do denso. Padrão do kit (`KIT_RETRIEVER` em `src/app/config.py`), sem medida no domínio: `run_evals --choose-retriever --apply` mede e grava a escolha em data/retriever.json.
+- **Retrieval** (`src/app/rag.py`; frase gerada de `data/retriever.json` por `scripts/fill_readme.py`): `dense+windows+cross:base`: denso `multilingual-e5-large` + cross-encoder `bge-reranker-v2-m3-int8` (top-10, 600 caracteres por trecho) — ordem do denso; nota do cross só no portão sem fonte (nota >= -5.28445): o redator lê os trechos na ordem do denso. Portão medido: responde 100% das perguntas com fonte e recusa 100% das sem fonte (46 × 19); sem o cross, o do denso responde 94% e recusa 95%. Custo a mais por busca: +818 ms no p50 (890 × 72 ms) e +839 MB de RAM. Reordenar pela nota foi medido e ganhou: Recall@5 0.949 reordenando × 0.924 na ordem do denso. Escolha gravada por `run_evals --choose-retriever --apply` em 2026-11-04T22:16:05+00:00 (commit `d2a2333`); vale sobre o `KIT_RETRIEVER` de `src/app/config.py`.
 <!-- retriever:end -->
 - **Busca no caminho do agente:** a 1ª busca usa as palavras do cliente e a pergunta reescrita pelo router entra
   junto; as buscas do plano rodam em paralelo (`FAQ_SEARCH_PARALLEL`) e, quando o plano gasta o teto, o redator
@@ -353,17 +354,24 @@ e como comparar pela primeira entrega.
 <!-- timeline:begin -->
 | hora (UTC; Brasília = UTC−3) | min | commit |
 |---|---:|---|
-| 12:57:25 | -16 | chore: repositório (antes do relógio) |
-| 13:13:44 | 0 | chore: scaffold from entregar-desafio-cronometrado kit v5.4.0 |
-| 13:18:01 | 4 | spec: oficiais (10 cenários literais com expect.facts e expect.entities) |
-| 13:20:32 | 7 | spec: taxonomia, desempates, parcial, standalone, CRM e 62 casos (replan 20, dependent 10, parallel 5, approval 5, hitl 6, memory 16) |
-| 13:28:40 | 15 | spec: approval-05 com valor dentro do crédito a receber do CRM (R$ 400,00 ≤ R$ 630,00; antes a tool recusaria o valor e o caso não mediria a aprovação) |
-| 13:38:30 | 25 | eval: fumaça ao vivo dos 10 oficiais (repeat 1, complete, US$ 0,24, intent 10/10) |
-| 13:43:31 | 30 | eval: conferência humana às cegas da fumaça dos oficiais (1 rotulador: 9 respostas julgadas, 1 "não sei"; humano aprova 9/9, checagem automática 9/9, concordância 1,0; sem rodada de consenso) |
-| 14:01:06 | 47 | eval: rodada 1 ao vivo integral (13 splits complete; official resolvidas 30/30 pass^3; juiz; ablação no_needs no split real) + FAILURE_MODES, DEMO e fix-ci |
-| 14:04:45 | 51 | merge maestra/fix-test: teste do modelo de README do kit pulado com o domínio montado |
+| 22:03:43 | -3 | chore: repositório (antes do relógio) |
+| 22:07:10 | 0 | chore: scaffold from entregar-desafio-cronometrado kit v5.7.0 (dominio montado) |
+| 22:08:36 | 1 | eval: held-out cego H1+H2 (80 casos, escritos de novo) |
+| 22:08:41 | 2 | preflight: domínio do desafio |
+| 22:10:02 | 3 | eval: 40 perguntas reais de lojistas com link (fontes abertas 40, descartadas 36; Reclame Aqui pelo título e trecho da busca: a página deu 403) |
+| 22:12:51 | 6 | gate: MIN_SCORE calibrado no domínio (7.396 → 7.939: responde 83% com fonte, recusa 90% sem fonte, n=46/19) |
+| 22:16:12 | 9 | retrieval: buscador medido no domínio (dense+windows+cross:base mantido; tabela em evals/results/retrieval_compare.json) |
+| 22:18:09 | 11 | eval: fumaça ao vivo julgada (official + memory, repeat 1, complete, US$ 0,98; juiz com o texto das fontes) e gravações para o replay |
+| 22:18:33 | 11 | eval: gate offline verde (intent 100,0% n=97, mínimo 90%; portão sem fonte recusa 89,5% n=19) |
+| 22:19:54 | 13 | rotulagem: seleção da página e conjunto congelado (20 reais julgadas + 3 adulteradas) |
+| 22:27:47 | 21 | rotulagem: fichas do 1º rotulador (Matheus, 20 reais + 3 adulteradas da página aad959daa9d4) |
+| 22:28:37 | 21 | rotulagem: fichas da 2ª rotuladora (Bianca, 23 da página aad959daa9d4) |
+| 22:29:27 | 22 | rotulagem: divergência entre as duas pessoas e conferência humana antes do consenso |
+| 22:30:12 | 23 | rotulagem: consenso das duas pessoas (memory-01 = certa) e conferência humana depois do consenso |
+| 22:31:00 | 24 | merge fix/rotulos: rótulos humanos (2 rotuladores, consenso) |
+| 22:33:21 | 26 | eval: rodada 1 ao vivo integral (13 splits complete; juiz por split; ablação no_needs no split real) + FAILURE_MODES |
 
-Relógio: **47 min**, 63 commits (aqui os 9 marcos; todos em `docs/TIMESHEET.md`).
+Relógio: **26 min**, 16 commits.
 <!-- timeline:end -->
 
 </details>
@@ -375,9 +383,24 @@ Cada limitação com o efeito que ela tem e o que faltaria para resolver:
 - **Dados do cliente e operador simulados:** o CRM (`data/crm/`) tem dois lojistas fictícios com datas relativas a hoje e dias úteis sem feriado; no eval a operadora é simulada (`evals/operator_sim.py`). Efeito: o Customer Support prova o fluxo, não a integração com o backend real da Getnet. Faltaria um adaptador para a API de recebíveis e terminais e a fila humana ligada ao atendimento real.
 - **Onde comparar com a referência:** cada entrega mede de novo e o §0 e `docs/RESULTS.md` dizem o número dela:
   memória ao vivo pass@1 (referência 0,85), bloqueio e handoff do guardrail ao vivo (gate de 90%), concordância dos
-  rotuladores humanos e o antes × depois do juiz quando há 2ª rodada. Mecanismo conhecido da memória: a rota do
-  seguimento curto de dado do cliente (`docs/FAILURE_MODES.md`, modo `intent`); corrigir pede exemplos de seguimento de
-  estado no router e uma rodada ao vivo do split `memory`.
+  rotuladores humanos e o antes × depois do juiz quando há 2ª rodada.
+- **Abaixo da referência nesta entrega, com o mecanismo:** oficiais resolvidas por completo (§0, `docs/RESULTS.md`).
+  A reprovação que se repete é a mesma pergunta em várias formas (`official-04`, `q-offvar-04-*`, `memory-04`,
+  `memory-11` em `evals/results/judge.json` e `docs/FAILURE_MODES.md`, modo `facts`): o redator escreve que as fontes
+  não dizem se é preciso conta (ou quem paga os juros do crediário) quando um trecho citado diz; no `official-04` o
+  trecho do domicílio Santander e da chave Pix (`sup-pix-09`, título "botão Pix não está disponível") também sai das
+  fontes ao vivo na fusão com a 2ª busca do router. Corrigir pede uma regra no `faq.md` do domínio contra frase de
+  ausência que contradiz um trecho e um título de trecho que diga do que ele trata; as duas mudam o pedido ao LLM de
+  quase todos os splits, e a prova exige regravar a rodada ao vivo inteira com o juiz (o tempo e o custo de uma
+  rodada 1, `docs/RESULTS.md`).
+- **Cortes desta entrega, com a causa:** a **rodada 2** (corrigir → medir de novo) não rodou: a única correção
+  com causa clara é a de cima, e ela muda o pedido ao LLM de quase todos os splits, ou seja, uma rodada inteira de
+  novo, que não cabia antes do corte do relógio. Os números do §0 são da rodada 1, no código final (o código não
+  mudou depois dela). Conferência humana: dois rotuladores e consenso feitos (`evals/human_consensus.json`,
+  `evals/human_divergences.md`); a validação juiz × pessoas sai em `evals/results/human_review.json` e, com poucos
+  negativos humanos, não chega ao mínimo por classe para declarar o juiz validado; as respostas adulteradas
+  plantadas passaram pelas pessoas (`evals/results/perturbed.json`): a conferência humana desta entrega mede
+  concordância, não atenção a defeito plantado.
 - **Fora desta entrega:** a central `get-ajuda` (índice montado por JavaScript) entrou só pelos 3 artigos de erro ADQ
   (`docs/SOURCES.md`); manuais em PDF das maquininhas não foram ingeridos. Pedido de dado de outro lojista é recusado
   na entrada pelo guardrail, antes de qualquer tool, com a frase neutra de toda recusa (escolha registrada na SPEC,
