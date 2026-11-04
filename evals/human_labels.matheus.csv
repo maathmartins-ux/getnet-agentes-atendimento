@@ -1,0 +1,172 @@
+id,split,pergunta,resposta,fontes,ferramentas,humano,nota,tipo_falha,c1,c2,c3,selecao,segundos
+memory-03,memory,"E a outra maquininha, a Get Clássica, como é?","A Get Clássica é uma maquininha ""POS 3G + Wi-Fi"", com conta e cartão grátis, recebimento em 2 dias e uso para CPF e CNPJ [1].
+
+**Taxas** (taxa única nas principais bandeiras) [1]:
+- Débito: 1,69%
+- Crédito 1x: 3,79%
+- Crédito 2x: 7,98%
+- Crédito 3x: 8,47%
+- Crédito 4x: 8,96%
+- Crédito 5x: 9,45%
+
+**Aluguel:** as duas páginas da fonte trazem faixas diferentes.
+- A página de 2025 diz que ela é grátis com vendas a partir de R$ 10.000 por mês. Voucher (VA/VR) e crediário não contam no faturamento para a isenção [1].
+- A página geral de 2026 diz que ela é grátis acima de R$ 20 mil por mês. O desconto no aluguel vale para novos clientes [3][4].
+
+**Como vender:** insira o cartão, escolha débito ou crédito, digite o valor, informe a senha e aguarde o comprovante impresso [8]. Essa passagem descreve a venda em geral e não cita a Get Clássica pelo nome.
+
+Não encontrei detalhes físicos, como tela e bateria. Se quiser, posso encaminhar você a um atendente humano.",prod-get-classica-01 sup-duvidas-97 prod-todas-maquininhas-02 prod-get-tap-04 sup-get-smart-10 prod-get-smart-07 prod-get-smart-05 sup-operacional-12 prod-todas-maquininhas-08 sup-get-smart-16,,fail,wrong_route,wrong_route,nao,nao,sim,aleatoria,25
+official-04,official,Do I need a bank account to receive my sales via Pix?,"You can receive Pix sales with the Get Conta, Getnet's free digital account for your business. With it you can send and receive money and sell through Pix [7]. Receiving sales is also one of the transactions that keep a Get Conta active [6].
+
+Customers can pay by Pix through the QR Code on the card machine, Get Tap on your phone, or biometrics [8]. Pix is also available on physical terminals, TEF Auttar and e-commerce [5].
+
+The sources don't say whether a bank account is mandatory, or whether you can receive Pix sales in an account at another bank. I can pass your question to a human agent if you'd like.",sup-duvidas-57 sup-pix-mais-respostas-18 prod-pix-02 sup-pix-mais-respostas-24 sup-duvidas-82 sup-get-conta-15 sup-get-conta-02 prod-pix-01 prod-todas-maquininhas-02 prod-get-smart-08,,,,,naosei,naosei,sim,aleatoria,26
+official-10,official,Can I sell through WhatsApp using the Payment Link?,"Yes, you can sell through WhatsApp with the Payment Link. Getnet says sellers can send the link to customers by social media, WhatsApp, email and SMS. The customer clicks the link, chooses a payment method and completes the purchase [1]. The Payment Link page also lists selling through WhatsApp or a social network as a benefit [2].
+
+- The customer can pay with debit, credit, Pix, Wallet or boleto [3].
+- Transactions made through the Payment Link must go through the antifraud check [5].
+- You don't need an active website to generate a link [5].",sup-link-de-pagamento-12 prod-link-de-pagamento-01 prod-link-de-pagamento-02 sup-link-de-pagamento-10 sup-link-de-pagamento-07,,pass,,,sim,nao,sim,aleatoria,9
+memory-05,memory,E por e-mail também dá?,"Sim, dá para vender por e-mail com o Link de Pagamento. Você pode enviar o link aos clientes por redes sociais, WhatsApp, e-mail e SMS [1].
+
+O cliente clica no link, escolhe o método de pagamento e finaliza a compra [1]. Ele é levado ao checkout Getnet, onde informa dados pessoais e endereço de entrega e escolhe a forma de pagamento [2].",sup-link-de-pagamento-12 sup-link-de-pagamento-11 sup-duvidas-51 prod-link-de-pagamento-02 sup-link-de-pagamento-07,,pass,,,sim,nao,sim,aleatoria,9
+official-08,official,My card machine is showing a transaction decline error.,"Your machine's declines today came from the card issuers, not from a fault in the terminal. The records show two declines on T1988A, both today (04/11/2026):
+
+- **TX1007**, 10:05, credit, R$ 210,00. Code 51 means insufficient balance or credit limit. The buyer should contact the card issuer or pay with another card or Pix.
+- **TX1008**, 10:40, debit, R$ 75,00. Code 05 means the issuer did not authorize it. The buyer should contact their bank. Retrying will not help.
+
+T1988A is online on Wi-Fi with good signal. In the same period there were 6 approved sales, totaling R$ 995,40.
+
+Your other terminal, T1988B, has been offline with no signal for 5 hours. I can propose a support ticket for it, and it would only open after you confirm. I can also pass your case to a human agent if you want.",,get_transactions get_terminals,pass,,,sim,nao,sim,aleatoria,16
+memory-15~p1,perturbed,Qual era mesmo a maquininha com problema que eu te falei?,"A maquininha com problema é a **T1988B (Get Clássica)**, a que você citou antes. Ela está offline, sem sinal, e conecta por chip. O último contato foi em 04/11/2026 às 14:12, e ela está offline há 20 horas.
+
+A outra, a T1988A (Get Smart), está online no wi-fi com sinal bom.
+
+Posso propor a abertura de um chamado técnico para a T1988B, com o motivo ""sem sinal"". Ele só é aberto depois que você confirmar. Quer que eu proponha?",,get_terminals,pass,,,sim,nao,sim,plantada,12
+official-07,official,What's the euro exchange rate today?,"The euro's PTAX rate for 04/11/2026 is R$ 6.1531 for buying and R$ 6.1549 for selling. Rounded, both are R$ 6.15. This comes from the Banco Central do Brasil closing bulletin.
+
+Source: https://www.bcb.gov.br/estabilidadefinanceira/historicocotacoes",https://www.bcb.gov.br/estabilidadefinanceira/historicocotacoes,currency_rate,pass,,,sim,nao,sim,aleatoria,7
+official-09,official,How many installments can I split a sale into with the crediário?,"You can split a sale into up to 48 installments with the Crediário [1][3]. Each card issuer sets its own installment limit under its credit policies, and interest rates can vary by issuer [1][2].
+
+To check the interest before the sale, insert the card, enter the amount, and choose credit > crediário. If the machine has a paper roll, it can also print the simulation. The simulation is for reference only. It is subject to credit analysis, so the card issuer decides whether to approve the transaction [2].",prod-crediario-03 sup-crediario-03 prod-crediario-01 sup-duvidas-76 sup-parcelado-01,,pass,,,sim,nao,sim,aleatoria,10
+memory-16,memory,Remind me which installment limit we talked about last time?,"Our last conversation (4 Nov 2026) was about splitting a sale with the Crediário. The limit is up to 48 installments on a credit card [1][5].
+
+- Each card issuer sets its own installment limit under its credit policies, and interest rates can vary by issuer [1][3].
+- The card machine shows the customer's interest in a simulation. To run it, insert the card, enter the amount, and choose credit > crediário. The simulation is for reference only. The issuer decides whether to approve the transaction [3].
+- Parcelado Lojista is a different product. It is interest-free and limited to 12 installments [2].",prod-crediario-03 sup-duvidas-76 sup-crediario-03 sup-pix-mais-respostas-05 prod-crediario-01,,pass,,,sim,nao,sim,aleatoria,21
+official-05,official,"My card machine won't connect to the internet, what should I do?","Your offline machine is T1988B (Get Clássica). It uses a chip connection and shows no signal. It last made contact on 04/11/2026 at 14:12 and has been offline for 5 hours. Your other machine, T1988A, is online.
+
+Steps from the manuals:
+1. **Check the chip (SIM):** Turn the machine off and open the back cover. Insert the chip in the slot marked SIM1 or SIM2 with the metal side facing down. Close the cover, turn the machine on, and wait for it to show a connected network (2G or 3G) [1].
+2. **Run a communication test:** Press the function button (F, # or the one on your machine). Select option 2 (maintenance), then option 1 (communication test) [6].
+3. **If the signal fluctuates (error ADQ 1-84):** Press Function and enter 25. Enter the Operator Password, then select Function 46. The screen turns green after each step. Then make a test sale [4].
+4. **If you get a connection error during a sale (error ADQ 1-19):** Press Function and enter 59. Select Function 25, enter the Operator Password, then select Function 46. Then make a test sale [7].
+5. **Restart if needed:** How you turn the machine off and on depends on your model, so check the instructions for your model [2].
+
+I can propose a support ticket for T1988B with the reason ""no signal"". Nothing is opened until you confirm, and an unconfirmed proposal expires after 15 minutes. The sources don't say what else to try if the machine still won't connect after these steps. A human agent can help with that if you want.
+
+Do you want me to propose the ticket?",sup-duvidas-05 sup-operacional-01 prod-crediario-08 sup-erro-adq-1-84-01 sup-pix-09 sup-duvidas-06 sup-erro-adq-1-19-01 sup-get-smart-04 prod-crediario-06 sup-pix-mais-respostas-16,get_terminals,pass,,,sim,nao,sim,aleatoria,18
+memory-06,memory,How long has it been down?,"Terminal T1988B (Get Clássica) has been offline for 5 hours. Its last contact was on 04/11/2026 at 14:12, and it shows a chip connection with no signal.
+
+If you want to try reconnecting it, these steps come from the general FAQ:
+- **Restart it.** On some models, hold ""."" and the yellow key together for 2 seconds to turn it off. Then turn it on with the green key [6].
+- **Check the chip.** With the machine off, open the back cover. Put the chip in the SIM1 or SIM2 slot, metal side down. Close the cover, turn the machine on and wait for the data network connection [1].
+- **Confirm the signal.** When the screen shows a connected network (2G or 3G), the machine is ready for use [1].
+- **Run a communication test.** Press the function button, then choose option 2 (maintenance), then option 1 (communication test) [10].
+- **If the signal keeps dropping,** press Function, enter 25, and enter the Operator Password. Then select Function 46 and run a test sale [9].
+
+I didn't find a connection manual specific to the Get Clássica, so these steps are general.
+
+I can also propose a support ticket for this terminal with the reason ""no signal"". Nothing is opened until you confirm, and the proposal expires after 15 minutes.",sup-duvidas-05 prod-todas-maquininhas-08 prod-todas-maquininhas-02 prod-get-smart-05 prod-get-classica-01 sup-operacional-01 prod-todas-maquininhas-04 sup-erro-adq-1-87-01 sup-erro-adq-1-84-01 sup-duvidas-06,get_terminals,pass,,,sim,nao,sim,aleatoria,13
+memory-09,memory,Why was the second one declined?,"The second declined sale, TX1008, was declined with code 05, which means the card issuer did not authorize it. It was a R$ 75,00 debit sale on 04/11/2026 at 10:40. The buyer should contact the card-issuing bank, and trying the card again will not help.
+
+I found no further guidance on code 05 in the knowledge base. If you want a person to look at this, I can hand the case to a human agent.",,get_transactions,pass,,,sim,nao,sim,aleatoria,23
+memory-02,memory,"And the other one, the Get Clássica?","The Get Clássica is a Getnet card machine, listed as ""Maquininha POS 3G + Wi-Fi"" [3].
+
+- **Cost:** The account and card are free. The machine is free if you reach a sales threshold [3].
+- **Current threshold:** The newer 2026 page says the machine is free above R$20,000 a month in sales [5]. The older 2025 page said R$10,000 [3].
+- **Receiving:** You receive in 2 days [3].
+- **Who can use it:** It's valid for CPF and CNPJ [3].
+- **Rates:** There is a single rate across the main card brands. Debit is 1.69% and credit in 1x is 3.79% [3].
+
+I couldn't find details on its connection, receipt printing or other functions. A human agent can help with that if you'd like.",sup-get-smart-10 prod-todas-maquininhas-07 prod-get-classica-01 prod-todas-maquininhas-08 prod-todas-maquininhas-02 prod-get-smart-01 prod-get-smart-02 sup-duvidas-11 prod-get-classica-02 prod-get-tap-02,,,,,naosei,naosei,sim,aleatoria,30
+memory-07,memory,"E a outra, está funcionando?","Sim, a T1988A (Get Smart) está funcionando. Ela aparece como online, com conexão Wi-Fi, sinal bom e último contato em 04/11/2026 às 19:10.
+
+A outra maquininha, a T1988B (Get Clássica), está offline. Ela usa chip, está sem sinal e está offline há 5 horas.
+
+Posso propor a abertura de um chamado técnico para a T1988B por falta de sinal. Ele só é aberto depois que você confirmar. Quer que eu proponha?",,get_terminals,,,,naosei,naosei,sim,aleatoria,26
+official-01,official,What's the difference between the Get Clássica and the Get Smart?,"The Get Smart is an Android card machine that runs business functions on the device. The Get Clássica is described mainly by its rates, its free-machine offer and who it suits.
+
+**Get Smart**
+- You can control stock, place orders, close tabs, load a menu and issue invoices on the machine. It can also integrate with your establishment's system [1].
+- It works as both computer and fiscal printer [3].
+- It reconciles credit, debit, store credit, QR Code and cash [3].
+- Whether it prints the NF-e depends on the app you choose. Most Get Smart apps issue it [4].
+- It can be used as a TEF solution [6].
+- It supports payment split for commissions or tips [7].
+
+**Get Clássica**
+- It's for individuals (CPF) or businesses (CNPJ) who want to sell more without paying rent [5].
+- You get receipt in 2 days, a free account and card, and one flat rate across the main card brands [5].
+- The 2025 page lists these rates [5]:
+  - Debit: 1.69%
+  - Credit 1x: 3.79%
+  - Credit 2x: 7.98%
+  - Credit 3x: 8.47%
+  - Credit 4x: 8.96%
+  - Credit 5x: 9.45%
+
+**Free machine**
+- The Get Clássica is free with sales from R$10,000 per month.
+- The Get Smart is free from R$60,000 per month [5].
+
+I couldn't find the Get Smart's rates or receipt timing. A human agent can help with those if you'd like.",sup-get-smart-10 prod-todas-maquininhas-07 sup-get-smart-08 sup-get-smart-16 prod-get-classica-01 prod-get-smart-07 prod-get-smart-08 prod-todas-maquininhas-08 prod-get-tap-04 sup-taxas-18,,pass,,,sim,nao,sim,aleatoria,13
+official-03,official,When will the money from yesterday's sales be deposited?,"Yesterday's sales (03/11/2026) total R$ 695,50. Deposit dates by payment type:
+
+- **Pix:** R$ 120,00, deposited on 03/11/2026.
+- **Debit:** R$ 95,50, deposited on 04/11/2026.
+- **Credit (30-day plan):** R$ 480,00, expected on 03/12/2026.
+
+R$ 215,50 has already been deposited. R$ 480,00 is still to be deposited.",,get_settlements,pass,,,sim,nao,sim,aleatoria,13
+official-02,official,What's the weather forecast in Porto Alegre tomorrow?,"Tomorrow (2026-11-05) in Porto Alegre, the forecast is a low of 18 °C, a high of 27 °C, and a chance of rain of up to 39%. Source: wttr.in.",https://wttr.in/,weather_forecast,pass,,,sim,nao,sim,aleatoria,9
+memory-13,memory,What does code 51 mean?,"Code 51 means insufficient balance or credit limit on the buyer's card.
+
+It was TX1007 on 04/11/2026 at 10:05, a credit sale of R$ 210,00 on terminal T1988A. The buyer should contact their card issuer, or pay with another card or Pix.
+
+If you'd like a human agent to look at this sale, I can hand your case to one.",,get_transactions,pass,,,sim,nao,sim,aleatoria,17
+memory-10~p1,perturbed,Como eu resolvo isso?,"Para resolver o sem sinal da T1988B, que usa chip, comece checando o chip e fazendo o teste de comunicação. Ela está offline há 5 horas, e o último contato foi em 04/11/2026 às 14:12.
+
+1. Desligue a máquina e abra a tampa traseira. Coloque o chip em SIM1 ou SIM2, com a parte metálica para baixo. Feche a tampa, ligue e aguarde a rede de dados [2].
+2. Quando aparecer rede conectada (2G ou 3G), a máquina está pronta [2].
+3. Faça o teste de comunicação. Aperte a tecla de função (F, # ou a da sua máquina), escolha 2 (manutenção) e depois 1 (teste de comunicação) [6].
+4. Se aparecer o erro ADQ 1-84, que acontece por oscilação de sinal [1]:
+   - Tecla de Função, depois 25.
+   - Digite a Senha do Operador.
+   - Função 35.
+   - Faça uma venda teste.
+
+Esses passos vêm da página de dúvidas da Getnet e não dizem que valem especificamente para a Get Clássica.
+
+Já deixei proposto um chamado técnico para a T1988B com o motivo ""sem sinal"". **Ele ainda não foi aberto e só será aberto se você confirmar.** Uma proposta não confirmada expira em 15 minutos. Se preferir, posso encaminhar você a um atendente.",sup-erro-adq-1-84-01 sup-duvidas-05 prod-get-smart-07 prod-todas-maquininhas-04 prod-get-smart-08 sup-duvidas-06 prod-get-classica-01 prod-get-smart-05 prod-get-tap-03 prod-todas-maquininhas-02,get_terminals open_support_ticket,pass,,,sim,nao,sim,plantada,13
+official-06,official,How does receivables advance (antecipação) work with Getnet?,"Receivables advance (antecipação de vendas) lets you receive the value of your credit-card sales early, for both lump-sum and installment sales, instead of waiting for the normal settlement period [6].
+
+- **Timing:** You can advance a sale's schedule from D+1 (one business day after the sale). It stays available until D-3 (three business days before it would settle) [7].
+- **Example:** A sale made on 04/03 can be advanced from 05/03. If it would normally be credited on 03/04, you can advance it until 31/03 [9].
+- **Card brands:** Some enabled brands can't be advanced through Getnet. For those, you have to go through the brand's own operator [7].
+- **Automatic advance:** This is a condition for the exemption on the ""Receba Conforme suas Vendas"" plan. It goes through credit approval, and Getnet assesses each contract individually [3].
+- **E-commerce:** Advances on e-commerce sales are blocked for 6 months. Physical-store sales can still be advanced normally [5].
+- **Collateral (gravame):** If your receivables are collateral for a loan, they go to the lender. With Getnet's loan, your sales from Getnet and other acquirers are paid into your Get Conta, up to the outstanding loan balance [1][2].
+
+I didn't get the advance fee rate from the sources. A human agent can help with that.
+
+I can also propose an advance of credit receivables for an amount you choose. You must confirm the proposal, and then a human agent must approve it before it runs.",sup-antecipacao-de-vendas-05 sup-antecipacao-de-vendas-02 sup-duvidas-100 sup-antecipacao-de-vendas-08 sup-link-de-pagamento-12 sup-duvidas-12 sup-antecipacao-de-vendas-10 sup-duvidas-87 sup-antecipacao-de-vendas-11 sup-taxas-01,,pass,,,sim,nao,sim,aleatoria,12
+memory-08~p1,perturbed,E qual foi o valor da primeira?,"A venda TX1007 foi de R$ 157,50. Foi no crédito, hoje (04/11/2026) às 10:05, e foi recusada com o código 51 (saldo ou limite insuficiente). Consultei os últimos 7 dias.
+
+Se quiser, posso buscar o que fazer em caso de recusa com esse código.",,get_transactions,pass,,,sim,nao,sim,plantada,13
+memory-11,memory,And who pays the interest?,"The cardholder, meaning your customer, pays the interest on Crediário installments [1][3].
+
+- The maximum term and the interest rate vary by card issuer.
+- On the card machine, the customer can see the interest in a simulation (credit > crediário). The customer can also print a receipt of the simulation to check the interest and the final purchase amount [2].
+- You receive the sale in a single payment within 2 business days after the transaction is captured, whatever the number of installments. The discount fee is subtracted from the original amount [5].",prod-crediario-02 sup-crediario-03 prod-crediario-03 sup-parcelado-01 sup-duvidas-37,,pass,,,sim,nao,sim,aleatoria,33
+memory-01,memory,"E os juros, quem define?","Quem define os juros do parcelamento no Crediário é o emissor do cartão. A taxa de juros e o prazo máximo variam de acordo com o emissor [3][4]. O emissor também define o limite de parcelas, conforme as políticas de crédito dele [1].
+
+Para ver as condições antes de fechar a venda, faça a simulação na maquininha. Insira o cartão e o valor e escolha crédito > crediário. Se a maquininha tiver bobina, dá para imprimir o comprovante da simulação. A simulação serve só para consulta e fica sujeita à análise de crédito. Quem aprova a transação na contratação é o emissor [1].",sup-crediario-03 sup-parcelado-01 prod-crediario-03 prod-crediario-02 sup-duvidas-76,,pass,,,sim,nao,sim,aleatoria,16
