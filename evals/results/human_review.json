@@ -84,21 +84,30 @@
     }
    }
   },
-  "depois_do_consenso": null
+  "depois_do_consenso": {
+   "n": 17,
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "ac1": 1.0,
+   "resolvidas": [
+    "memory-01"
+   ],
+   "mantidas": []
+  }
  },
  "juiz_x_humano": {
-  "casos": 19,
-  "concordancia": 0.842,
-  "tpr": 0.882,
+  "casos": 20,
+  "concordancia": 0.85,
+  "tpr": 0.889,
   "tnr": 0.5,
-  "positives": 17,
+  "positives": 18,
   "negatives": 2,
   "juiz_reprova": 3,
   "validacao": {
    "validated": false,
    "missing": [
-    ">= 10 positivos e negativos humanos (tem 17 e 2)",
-    "TPR e TNR >= 0.8 (tem 0.882 e 0.5)"
+    ">= 10 positivos e negativos humanos (tem 18 e 2)",
+    "TPR e TNR >= 0.8 (tem 0.889 e 0.5)"
    ],
    "rule": ">= 10 por classe e TPR, TNR >= 0.8",
    "selection_rule": "só conta resposta real que entrou na amostra sem depender do juiz (sorteio ou checagem automática que falhou); a escolhida porque o juiz a reprovou e a sem o motivo da escolha gravado (seleção desconhecida) ficam fora da validação, inclusive do mínimo de negativos reais, e saem à parte como diagnóstico",
@@ -106,25 +115,25 @@
   },
   "veredito_do_juiz": "fundamentada, útil, no idioma da pergunta e sem vazamento — as 3 perguntas da página",
   "selecao": {
-   "aleatoria": 19
+   "aleatoria": 20
   },
   "leituras_reais": {
    "em_vigor": "depois",
    "por_que": "a pessoa reprova se qualquer das 3 perguntas da página sai ruim, e a 1ª é se a resposta atende ao pedido: sem o `helpful`, a resposta fundamentada que não atende contaria como erro do juiz, quando é só critério diferente",
    "antes": {
     "regra": "não fundamentada, idioma errado ou vazamento (evals.judge.verdict_fails)",
-    "casos": 19,
-    "concordancia": 0.842,
-    "tpr": 0.882,
+    "casos": 20,
+    "concordancia": 0.85,
+    "tpr": 0.889,
     "tnr": 0.5,
-    "positives": 17,
+    "positives": 18,
     "negatives": 2,
     "juiz_reprova": 3,
     "validacao": {
      "validated": false,
      "missing": [
-      ">= 10 positivos e negativos humanos (tem 17 e 2)",
-      "TPR e TNR >= 0.8 (tem 0.882 e 0.5)"
+      ">= 10 positivos e negativos humanos (tem 18 e 2)",
+      "TPR e TNR >= 0.8 (tem 0.889 e 0.5)"
      ],
      "rule": ">= 10 por classe e TPR, TNR >= 0.8",
      "selection_rule": "só conta resposta real que entrou na amostra sem depender do juiz (sorteio ou checagem automática que falhou); a escolhida porque o juiz a reprovou e a sem o motivo da escolha gravado (seleção desconhecida) ficam fora da validação, inclusive do mínimo de negativos reais, e saem à parte como diagnóstico",
@@ -133,18 +142,18 @@
    },
    "depois": {
     "regra": "não fundamentada, idioma errado, vazamento ou não atende ao pedido (+ helpful=False: as 3 perguntas da página)",
-    "casos": 19,
-    "concordancia": 0.842,
-    "tpr": 0.882,
+    "casos": 20,
+    "concordancia": 0.85,
+    "tpr": 0.889,
     "tnr": 0.5,
-    "positives": 17,
+    "positives": 18,
     "negatives": 2,
     "juiz_reprova": 3,
     "validacao": {
      "validated": false,
      "missing": [
-      ">= 10 positivos e negativos humanos (tem 17 e 2)",
-      "TPR e TNR >= 0.8 (tem 0.882 e 0.5)"
+      ">= 10 positivos e negativos humanos (tem 18 e 2)",
+      "TPR e TNR >= 0.8 (tem 0.889 e 0.5)"
      ],
      "rule": ">= 10 por classe e TPR, TNR >= 0.8",
      "selection_rule": "só conta resposta real que entrou na amostra sem depender do juiz (sorteio ou checagem automática que falhou); a escolhida porque o juiz a reprovou e a sem o motivo da escolha gravado (seleção desconhecida) ficam fora da validação, inclusive do mínimo de negativos reais, e saem à parte como diagnóstico",
@@ -153,18 +162,18 @@
    }
   },
   "reais": {
-   "casos": 19,
-   "concordancia": 0.842,
-   "tpr": 0.882,
+   "casos": 20,
+   "concordancia": 0.85,
+   "tpr": 0.889,
    "tnr": 0.5,
-   "positives": 17,
+   "positives": 18,
    "negatives": 2,
    "juiz_reprova": 3,
    "validacao": {
     "validated": false,
     "missing": [
-     ">= 10 positivos e negativos humanos (tem 17 e 2)",
-     "TPR e TNR >= 0.8 (tem 0.882 e 0.5)"
+     ">= 10 positivos e negativos humanos (tem 18 e 2)",
+     "TPR e TNR >= 0.8 (tem 0.889 e 0.5)"
     ],
     "rule": ">= 10 por classe e TPR, TNR >= 0.8",
     "selection_rule": "só conta resposta real que entrou na amostra sem depender do juiz (sorteio ou checagem automática que falhou); a escolhida porque o juiz a reprovou e a sem o motivo da escolha gravado (seleção desconhecida) ficam fora da validação, inclusive do mínimo de negativos reais, e saem à parte como diagnóstico",
