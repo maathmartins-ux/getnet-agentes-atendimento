@@ -1,7 +1,7 @@
 # Procedência: o que veio do kit e o que foi feito no relógio
 
 Este documento existe para que a comparação com quem entregou uma vez só seja justa. Ele diz o que já estava
-pronto antes do relógio, de onde veio e o que os <!-- minutos:begin -->26<!-- minutos:end --> minutos medem.
+pronto antes do relógio, de onde veio e o que os <!-- minutos:begin -->41<!-- minutos:end --> minutos medem.
 
 <!-- dominio-montado:begin -->
 **Domínio montado antes do relógio.** O corpus, o CRM simulado, os casos de avaliação, o gold de busca, os prompts e as regras do domínio e os docs do domínio vieram prontos da tentativa cronometrada anterior deste mesmo desafio (https://github.com/maathmartins-ux/getnet-ensaio-60min-r13, commit `7c93c4a`, 2026-11-04). No relógio desta entrega: held-out e perguntas reais escritos de novo por autores cegos, todas as medições (offline, ao vivo, juiz), a conferência humana, as correções e esta documentação. Vetores do corpus pré-calculados no kit (derivados do corpus, sem held-out nem perguntas reais; recalculados quando o texto muda).
@@ -63,7 +63,7 @@ declara o domínio montado).
 para medir as correções antes de usá-las; o resultado está no histórico do kit (`KIT_CHANGELOG.md`). Os números
 deste repositório vêm só das medidas feitas aqui, no relógio, sobre o corpus e os casos deste enunciado.
 
-## 2. O que os <!-- minutos:begin -->26<!-- minutos:end --> minutos medem, e o que não medem
+## 2. O que os <!-- minutos:begin -->41<!-- minutos:end --> minutos medem, e o que não medem
 
 - **Medem:** a especialização do kit para este enunciado, no relógio: spec, base de conhecimento, ferramentas do
   domínio, casos de avaliação (incluindo o held-out cego e as perguntas reais), prompts, regras do router e do
@@ -100,8 +100,9 @@ arquivos gerados, como `evals/results/`, ficam fora da conta):
 | `docker-compose.hardened.yml` | 54 | 0 | 0 | 0 |
 | `docker-compose.scale.yml` | 31 | 0 | 0 | 0 |
 | `docker-compose.yml` | 94 | 0 | 0 | 0 |
-| `docs` | 1191 | 485 | 10 | 3 |
+| `docs` | 1191 | 748 | 11 | 3 |
 | `docs/adr` | 401 | 0 | 0 | 0 |
+| `docs/video` | 0 | 141 | 0 | 0 |
 | `evals` | 9079 | 518 | 0 | 0 |
 | `evals/cases.d` | 127 | 0 | 0 | 0 |
 | `evals/cassettes` | 0 | 2470 | 0 | 0 |
@@ -110,7 +111,7 @@ arquivos gerados, como `evals/results/`, ficam fora da conta):
 | `evals/proxy` | 286 | 0 | 0 | 0 |
 | `evals/retrieval.d` | 66 | 0 | 0 | 0 |
 | `evals/retrieval.drafts` | 15 | 0 | 0 | 0 |
-| `evals/validation` | 0 | 2023 | 0 | 0 |
+| `evals/validation` | 0 | 2361 | 0 | 0 |
 | `ops` | 808 | 0 | 0 | 0 |
 | `pyproject.toml` | 59 | 0 | 0 | 0 |
 | `requirements-dev.lock` | 252 | 0 | 0 | 0 |
@@ -121,7 +122,7 @@ arquivos gerados, como `evals/results/`, ficam fora da conta):
 | `tests` | 25088 | 0 | 0 | 0 |
 | `tests/fixtures` | 122 | 0 | 0 | 0 |
 
-Total: **64236** linhas do kit (commit `ef79051`) e **5959** escritas no relógio (8% do total). Arquivos do kit alterados no relógio: 7. Fora da conta, por serem gerados: 159019 linhas em `evals/results/`.
+Total: **64236** linhas do kit (commit `ef79051`) e **6701** escritas no relógio (9% do total). Arquivos do kit alterados no relógio: 7. Fora da conta, por serem gerados: 159117 linhas em `evals/results/`.
 <!-- kit:end -->
 
 Linha do tempo commit a commit, com as tags `clock-start` e `clock-end`: [TIMESHEET.md](TIMESHEET.md).

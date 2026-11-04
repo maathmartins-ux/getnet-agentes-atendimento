@@ -8,6 +8,7 @@ Atendimento multiagente para lojistas da Getnet: um Router lê cada mensagem (pt
 | Rodar | `docker compose up -d --build` → `http://localhost:8000/docs` · console do operador em `/operator` |
 | Testar | `python scripts/check.py --docker --scale` (lint, testes, eval com gate, build, imagem sem extras, smoke do container, 2 réplicas atrás de balanceador) |
 | CI | [GitHub Actions](../../actions/workflows/ci.yml) (o último commit é só o README; o código é o do commit anterior) |
+| Vídeo | [walkthrough](docs/video/walkthrough.mp4) (MP4 + legendas; telas e números reais) |
 <!-- links:end -->
 
 O que o enunciado pede que o README cubra → onde: build, configure, run and test (§1) · orchestration architecture
@@ -24,16 +25,17 @@ tabelas completas, em [docs/RESULTS.md](docs/RESULTS.md); o que veio do kit, em 
 <!-- scorecard:begin -->
 | medida | valor | como se mede |
 |---|---:|---|
-| Oficiais resolvidas (sem humano + todo fato + fonte + juiz: fundamentada) | 1.00 | resposta sem humano, com todo fato de referência do cenário, com fonte e que o juiz diz fundamentada (os 10 do enunciado; a regex sozinha não basta) |
-| Oficiais resolvidas: pass^k (todas as rodadas, com o juiz) | 1.00 | o mesmo, em todas as rodadas de cada cenário |
-| Juiz: respostas oficiais fundamentadas | 1.00 | juiz LLM com o texto das fontes: cada afirmação apoiada nelas |
-| Juiz: respostas oficiais úteis (helpful) | 1.00 | juiz LLM: a resposta resolve o que o lojista perguntou |
-| Memória ao vivo: pass@1 | 0.81 | conversas de vários turnos: o fato do turno anterior chega à resposta |
+| Oficiais resolvidas por completo (sem humano + todo fato + fonte + juiz: fundamentada; parcial fora) | 0.80 | resposta sem humano, com todo fato de referência do cenário, com fonte, que o juiz diz fundamentada e sem passo parcial (os 10 do enunciado; a regex sozinha não basta) |
+| Oficiais resolvidas: pass^k (todas as rodadas, com o juiz) | 0.70 | o mesmo, em todas as rodadas de cada cenário |
+| Oficiais resolvidas só em parte (resposta parcial; fora da manchete) | 0.07 | resolvida sem humano, mas com um passo parcial (a resposta diz o que a fonte não cobre): honesta, fora da manchete; somada a ela dá a fração com resposta útil em parte |
+| Juiz: respostas oficiais fundamentadas | 0.90 | juiz LLM com o texto das fontes: cada afirmação apoiada nelas |
+| Juiz: respostas oficiais úteis (helpful) | 0.93 | juiz LLM: a resposta resolve o que o lojista perguntou |
+| Memória ao vivo: pass@1 | 0.96 | conversas de vários turnos: o fato do turno anterior chega à resposta |
 | Humano no laço: resposta do operador no mesmo turno (split hitl) | 1.00 | operadora simulada responde o caso aberto no turno dentro da espera: a resposta dela e os passos pendentes saem no mesmo turno (a que chega depois vai pela retomada, uma vez só) |
 | Busca: Recall@3 | 0.89 | perguntas rotuladas olhando a fonte: a página certa entre as 3 primeiras |
-| Busca: MRR | 0.89 | posição média da primeira página certa (1 = sempre em primeiro) |
-| Turnos resolvidos sem humano (ao vivo, todos os splits) | 0.78 | todas as execuções ao vivo, de todos os splits: resposta sem pedir humano, sem erro e, se julgada, fundamentada pelo juiz (recusa do guardrail conta; o fato se confere só nas oficiais resolvidas) |
-| Custo por turno resolvido sem humano (ao vivo) | US$ 0.0303 | gasto ao vivo de todos os splits (inclusive turnos que foram ao humano e turnos anteriores das conversas) ÷ as execuções resolvidas da linha acima |
+| Busca: MRR | 0.90 | posição média da primeira página certa (1 = sempre em primeiro) |
+| Turnos resolvidos sem humano (ao vivo, todos os splits) | 0.82 | todas as execuções ao vivo, de todos os splits: resposta sem pedir humano, sem erro e, se julgada, fundamentada pelo juiz (recusa do guardrail conta; o fato se confere só nas oficiais resolvidas) |
+| Custo por turno resolvido sem humano (ao vivo) | US$ 0.0341 | gasto ao vivo de todos os splits (inclusive turnos que foram ao humano e turnos anteriores das conversas) ÷ as execuções resolvidas da linha acima |
 <!-- scorecard:end -->
 
 ### 0.1 Mapeamento do desafio
@@ -169,7 +171,7 @@ No desafio Getnet a divisão ganha um 4º especialista, `general` (tools `weathe
 - **Storage**: trechos em JSONL versionado em `data/` (id, URL, `fetched_at`, sha256); vetores do denso em cache no
   disco.
 <!-- retriever:begin -->
-- **Retrieval** (`src/app/rag.py`; frase gerada de `KIT_RETRIEVER` por `scripts/fill_readme.py`): `dense+windows+cross:base`: denso `multilingual-e5-large` + cross-encoder `bge-reranker-v2-m3-int8` (top-10, 600 caracteres por trecho) — ordem do denso; nota do cross só no portão sem fonte: o redator lê os trechos na ordem do denso. Padrão do kit (`KIT_RETRIEVER` em `src/app/config.py`), sem medida no domínio: `run_evals --choose-retriever --apply` mede e grava a escolha em data/retriever.json.
+- **Retrieval** (`src/app/rag.py`; frase gerada de `data/retriever.json` por `scripts/fill_readme.py`): `dense+windows+cross:base`: denso `multilingual-e5-large` + cross-encoder `bge-reranker-v2-m3-int8` (top-10, 600 caracteres por trecho) — ordem do denso; nota do cross só no portão sem fonte (nota >= -5.28445): o redator lê os trechos na ordem do denso. Portão medido: responde 100% das perguntas com fonte e recusa 100% das sem fonte (46 × 19); sem o cross, o do denso responde 94% e recusa 95%. Custo a mais por busca: +818 ms no p50 (890 × 72 ms) e +839 MB de RAM. Reordenar pela nota foi medido e ganhou: Recall@5 0.949 reordenando × 0.924 na ordem do denso. Escolha gravada por `run_evals --choose-retriever --apply` em 2026-11-04T22:16:05+00:00 (commit `d2a2333`); vale sobre o `KIT_RETRIEVER` de `src/app/config.py`.
 <!-- retriever:end -->
 - **Busca no caminho do agente:** a 1ª busca usa as palavras do cliente e a pergunta reescrita pelo router entra
   junto; as buscas do plano rodam em paralelo (`FAQ_SEARCH_PARALLEL`) e, quando o plano gasta o teto, o redator
@@ -181,7 +183,7 @@ No desafio Getnet a divisão ganha um 4º especialista, `general` (tools `weathe
   aceitos e cita a fonte; responde o que a fonte cobre e diz o que falta (`partial`) ou vai ao humano (`insufficient`).
   Só fica `partial` quando falta algo que o cliente pediu: a falta de um item vizinho, que ninguém perguntou, sai do
   texto e não conta (`src/app/coverage.py`; o item descartado fica no trace, em `missing_dropped`).
-  Corpus deste desafio: as páginas de `data/sources.json` (produtos, central de dúvidas e artigos de erro de conexão da maquininha em `site.getnet.com.br`), lista e datas em [docs/SOURCES.md](docs/SOURCES.md); buscador = padrão do kit, sem troca no relógio (a medida neste corpus é a do bloco do buscador acima, gerado de `data/retriever.json`); placar da busca no gold essencial rotulado às cegas no §0.
+  Corpus deste desafio: as páginas de `data/sources.json` (produtos, central de dúvidas e artigos de erro de conexão da maquininha em `site.getnet.com.br`), lista e datas em [docs/SOURCES.md](docs/SOURCES.md); buscador = padrão do kit, sem troca no relógio (a medida neste corpus é a do bloco do buscador acima, gerado de `data/retriever.json`); placar da busca no gold de busca do domínio (escrito pelo time) no §0.
 
 ### 2.3 Supervisão humana (o caminho do operador)
 
@@ -281,7 +283,7 @@ Cada decisão com a alternativa descartada e o número que a decidiu. Os número
 | Decisão | Alternativa descartada | Número que decidiu |
 |---|---|---|
 | **Supervisor LLM decide todo turno** (agentes como tools; [ADR 0005](docs/adr/0005-supervisor-em-todo-turno.md)) | atalho de 1 passo, em que a tabela escolhe o caminho dos casos mais comuns | a decisão fica observável em todo trace; custo: 2 chamadas e alguns segundos a mais por turno de um passo; sem chave ou com falha do provedor, a mesma tabela de transições roda offline |
-| Busca **dense + cross-encoder** (e5-large + bge-reranker-v2-m3, top-10, 600 caracteres), **decidida por medida antes do relógio** ([ADR 0004](docs/adr/0004-buscador-denso-com-teto-de-ram.md)) | escolher o buscador no relógio (`--choose-retriever`) | a escolha no relógio disputava a CPU com as frentes e media latência errada; no relógio a busca é só medida neste corpus, sem troca (`--keep-default`, tabela em `data/retriever.json`); o placar no caminho do agente é o do §0 (gerado de `evals/results/`) |
+| Busca **dense + cross-encoder** (e5-large + bge-reranker-v2-m3, top-10, 600 caracteres), **decidida por medida antes do relógio** ([ADR 0004](docs/adr/0004-buscador-denso-com-teto-de-ram.md)) | escolher o buscador no relógio (`--choose-retriever`) | a escolha no relógio disputava a CPU com o eval e a fumaça ao vivo e media latência errada; no relógio a busca é só medida neste corpus, sem troca (`--keep-default`, tabela em `data/retriever.json`); o placar no caminho do agente é o do §0 (gerado de `evals/results/`) |
 | Híbrido BM25 + denso, pool 20 e trecho de 1000 caracteres **medidos e rejeitados** ([ADR 0008](docs/adr/0008-considerado-e-nao-feito.md)) | adotar a variante de maior Recall@3 | medidas no corpus de uma entrega anterior (no ADR): nenhuma ganhou no top-5 que o redator lê sem custar latência, e o híbrido sem filtro de idioma tirava a fonte de um cenário oficial |
 | **Humano só quando o sistema não resolve** ([ADR 0006](docs/adr/0006-humano-so-quando-nao-resolve.md)): resposta parcial oferece o humano; nada resolvido escala, garantido em código (`_enforce_escalation`) | deixar o LLM oferecer o humano em qualquer falta de fonte | a 1ª versão (falta de fonte vira oferta) derrubou o replan para 30%; com a regra em código: 95% |
 | **Resposta parcial decidida no código** (`src/app/coverage.py`): a falta de um item que o cliente não pediu não deixa a resposta parcial e sai do texto | deixar o redator decidir pelo prompt | com a regra só no prompt, o redator marcava como falta itens vizinhos (a tabela de taxas numa pergunta de diferença; o que fazer se o teste falhar num passo a passo); a regra em código é conservadora: sem termo em comum com a pergunta a falta não conta, e na dúvida a resposta continua parcial e diz o que falta |
@@ -353,17 +355,17 @@ e como comparar pela primeira entrega.
 <!-- timeline:begin -->
 | hora (UTC; Brasília = UTC−3) | min | commit |
 |---|---:|---|
-| 12:57:25 | -16 | chore: repositório (antes do relógio) |
-| 13:13:44 | 0 | chore: scaffold from entregar-desafio-cronometrado kit v5.4.0 |
-| 13:18:01 | 4 | spec: oficiais (10 cenários literais com expect.facts e expect.entities) |
-| 13:20:32 | 7 | spec: taxonomia, desempates, parcial, standalone, CRM e 62 casos (replan 20, dependent 10, parallel 5, approval 5, hitl 6, memory 16) |
-| 13:28:40 | 15 | spec: approval-05 com valor dentro do crédito a receber do CRM (R$ 400,00 ≤ R$ 630,00; antes a tool recusaria o valor e o caso não mediria a aprovação) |
-| 13:38:30 | 25 | eval: fumaça ao vivo dos 10 oficiais (repeat 1, complete, US$ 0,24, intent 10/10) |
-| 13:43:31 | 30 | eval: conferência humana às cegas da fumaça dos oficiais (1 rotulador: 9 respostas julgadas, 1 "não sei"; humano aprova 9/9, checagem automática 9/9, concordância 1,0; sem rodada de consenso) |
-| 14:01:06 | 47 | eval: rodada 1 ao vivo integral (13 splits complete; official resolvidas 30/30 pass^3; juiz; ablação no_needs no split real) + FAILURE_MODES, DEMO e fix-ci |
-| 14:04:45 | 51 | merge maestra/fix-test: teste do modelo de README do kit pulado com o domínio montado |
+| 22:03:43 | -3 | chore: repositório (antes do relógio) |
+| 22:07:10 | 0 | chore: scaffold from entregar-desafio-cronometrado kit v5.7.0 (dominio montado) |
+| 22:08:36 | 1 | eval: held-out cego H1+H2 (80 casos, escritos de novo) |
+| 22:08:41 | 2 | preflight: domínio do desafio |
+| 22:10:02 | 3 | eval: 40 perguntas reais de lojistas com link (fontes abertas 40, descartadas 36; Reclame Aqui pelo título e trecho da busca: a página deu 403) |
+| 22:18:09 | 11 | eval: fumaça ao vivo julgada (official + memory, repeat 1, complete, US$ 0,98; juiz com o texto das fontes) e gravações para o replay |
+| 22:18:33 | 11 | eval: gate offline verde (intent 100,0% n=97, mínimo 90%; portão sem fonte recusa 89,5% n=19) |
+| 22:33:21 | 26 | eval: rodada 1 ao vivo integral (13 splits complete; juiz por split; ablação no_needs no split real) + FAILURE_MODES |
+| 22:48:17 | 41 | docs: PROCEDENCIA sem nota interna de comparação |
 
-Relógio: **47 min**, 63 commits (aqui os 9 marcos; todos em `docs/TIMESHEET.md`).
+Relógio: **41 min**, 21 commits (aqui os 9 marcos; todos em `docs/TIMESHEET.md`).
 <!-- timeline:end -->
 
 </details>
@@ -375,9 +377,25 @@ Cada limitação com o efeito que ela tem e o que faltaria para resolver:
 - **Dados do cliente e operador simulados:** o CRM (`data/crm/`) tem dois lojistas fictícios com datas relativas a hoje e dias úteis sem feriado; no eval a operadora é simulada (`evals/operator_sim.py`). Efeito: o Customer Support prova o fluxo, não a integração com o backend real da Getnet. Faltaria um adaptador para a API de recebíveis e terminais e a fila humana ligada ao atendimento real.
 - **Onde comparar com a referência:** cada entrega mede de novo e o §0 e `docs/RESULTS.md` dizem o número dela:
   memória ao vivo pass@1 (referência 0,85), bloqueio e handoff do guardrail ao vivo (gate de 90%), concordância dos
-  rotuladores humanos e o antes × depois do juiz quando há 2ª rodada. Mecanismo conhecido da memória: a rota do
-  seguimento curto de dado do cliente (`docs/FAILURE_MODES.md`, modo `intent`); corrigir pede exemplos de seguimento de
-  estado no router e uma rodada ao vivo do split `memory`.
+  rotuladores humanos e o antes × depois do juiz quando há 2ª rodada.
+- **Abaixo da referência nesta entrega, com o mecanismo:** oficiais resolvidas por completo (§0, `docs/RESULTS.md`).
+  A reprovação que se repete é a mesma pergunta em várias formas (`official-04`, `q-offvar-04-*`, `memory-04`,
+  `memory-11` em `evals/results/judge.json` e `docs/FAILURE_MODES.md`, modo `facts`): o redator escreve que as fontes
+  não dizem se é preciso conta (ou quem paga os juros do crediário) quando um trecho citado diz; no `official-04` o
+  trecho do domicílio Santander e da chave Pix (`sup-pix-09`, título "botão Pix não está disponível") também sai das
+  fontes ao vivo na fusão com a 2ª busca do router. Corrigir pede uma regra no `faq.md` do domínio contra frase de
+  ausência que contradiz um trecho e um título de trecho que diga do que ele trata; as duas mudam o pedido ao LLM de
+  quase todos os splits, e a prova exige regravar a rodada ao vivo inteira com o juiz (o tempo e o custo de uma
+  rodada 1, `docs/RESULTS.md`).
+- **Cortes desta entrega, com a causa:** a **rodada 2** (corrigir → medir de novo) não rodou: a única correção
+  com causa clara é a de cima, e ela muda o pedido ao LLM de quase todos os splits, ou seja, uma rodada inteira de
+  novo, que não cabia antes do corte do relógio. Os números do §0 são da rodada 1, no código final (o código não
+  mudou depois dela). Conferência humana: dois rotuladores e consenso feitos (`evals/human_consensus.json`,
+  `evals/human_divergences.md`); a validação juiz × pessoas sai em `evals/results/human_review.json` e, com poucos
+  negativos humanos, não chega ao mínimo por classe para declarar o juiz validado; as respostas adulteradas
+  plantadas passaram pelas pessoas (`evals/results/perturbed.json`); o juiz julgou todas as situações da página
+  congelada (`evals/validation/aad959daa9d4.json`): a conferência humana desta entrega mede
+  concordância, não atenção a defeito plantado.
 - **Fora desta entrega:** a central `get-ajuda` (índice montado por JavaScript) entrou só pelos 3 artigos de erro ADQ
   (`docs/SOURCES.md`); manuais em PDF das maquininhas não foram ingeridos. Pedido de dado de outro lojista é recusado
   na entrada pelo guardrail, antes de qualquer tool, com a frase neutra de toda recusa (escolha registrada na SPEC,
