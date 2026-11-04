@@ -70,7 +70,7 @@ deste repositório vêm só das medidas feitas aqui, no relógio, sobre o corpus
   supervisor, as medições ao vivo, as correções feitas a partir delas e esta documentação.
 - **Não medem:** o esforço de engenharia do motor genérico (orquestração, avaliação, identidade, HITL, operação), que
   foi feito antes e ao longo das tentativas anteriores, com conhecimento das correções.
-- **Para comparar pela primeira entrega**, a referência é a v1 (7,1).
+- **Para comparar pela primeira entrega**, a referência é a v1.
 
 ## 3. A medida, tirada do git
 

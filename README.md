@@ -281,7 +281,7 @@ Cada decisão com a alternativa descartada e o número que a decidiu. Os número
 | Decisão | Alternativa descartada | Número que decidiu |
 |---|---|---|
 | **Supervisor LLM decide todo turno** (agentes como tools; [ADR 0005](docs/adr/0005-supervisor-em-todo-turno.md)) | atalho de 1 passo, em que a tabela escolhe o caminho dos casos mais comuns | a decisão fica observável em todo trace; custo: 2 chamadas e alguns segundos a mais por turno de um passo; sem chave ou com falha do provedor, a mesma tabela de transições roda offline |
-| Busca **dense + cross-encoder** (e5-large + bge-reranker-v2-m3, top-10, 600 caracteres), **decidida por medida antes do relógio** ([ADR 0004](docs/adr/0004-buscador-denso-com-teto-de-ram.md)) | escolher o buscador no relógio (`--choose-retriever`) | a escolha no relógio disputava a CPU com as frentes e media latência errada; no relógio a busca é só medida neste corpus, sem troca (`--keep-default`, tabela em `data/retriever.json`); o placar no caminho do agente é o do §0 (gerado de `evals/results/`) |
+| Busca **dense + cross-encoder** (e5-large + bge-reranker-v2-m3, top-10, 600 caracteres), **decidida por medida antes do relógio** ([ADR 0004](docs/adr/0004-buscador-denso-com-teto-de-ram.md)) | escolher o buscador no relógio (`--choose-retriever`) | a escolha no relógio disputava a CPU com o eval e a fumaça ao vivo e media latência errada; no relógio a busca é só medida neste corpus, sem troca (`--keep-default`, tabela em `data/retriever.json`); o placar no caminho do agente é o do §0 (gerado de `evals/results/`) |
 | Híbrido BM25 + denso, pool 20 e trecho de 1000 caracteres **medidos e rejeitados** ([ADR 0008](docs/adr/0008-considerado-e-nao-feito.md)) | adotar a variante de maior Recall@3 | medidas no corpus de uma entrega anterior (no ADR): nenhuma ganhou no top-5 que o redator lê sem custar latência, e o híbrido sem filtro de idioma tirava a fonte de um cenário oficial |
 | **Humano só quando o sistema não resolve** ([ADR 0006](docs/adr/0006-humano-so-quando-nao-resolve.md)): resposta parcial oferece o humano; nada resolvido escala, garantido em código (`_enforce_escalation`) | deixar o LLM oferecer o humano em qualquer falta de fonte | a 1ª versão (falta de fonte vira oferta) derrubou o replan para 30%; com a regra em código: 95% |
 | **Resposta parcial decidida no código** (`src/app/coverage.py`): a falta de um item que o cliente não pediu não deixa a resposta parcial e sai do texto | deixar o redator decidir pelo prompt | com a regra só no prompt, o redator marcava como falta itens vizinhos (a tabela de taxas numa pergunta de diferença; o que fazer se o teste falhar num passo a passo); a regra em código é conservadora: sem termo em comum com a pergunta a falta não conta, e na dúvida a resposta continua parcial e diz o que falta |
@@ -375,9 +375,10 @@ Cada limitação com o efeito que ela tem e o que faltaria para resolver:
 - **Dados do cliente e operador simulados:** o CRM (`data/crm/`) tem dois lojistas fictícios com datas relativas a hoje e dias úteis sem feriado; no eval a operadora é simulada (`evals/operator_sim.py`). Efeito: o Customer Support prova o fluxo, não a integração com o backend real da Getnet. Faltaria um adaptador para a API de recebíveis e terminais e a fila humana ligada ao atendimento real.
 - **Onde comparar com a referência:** cada entrega mede de novo e o §0 e `docs/RESULTS.md` dizem o número dela:
   memória ao vivo pass@1 (referência 0,85), bloqueio e handoff do guardrail ao vivo (gate de 90%), concordância dos
-  rotuladores humanos e o antes × depois do juiz quando há 2ª rodada. Mecanismo conhecido da memória: a rota do
-  seguimento curto de dado do cliente (`docs/FAILURE_MODES.md`, modo `intent`); corrigir pede exemplos de seguimento de
-  estado no router e uma rodada ao vivo do split `memory`.
+  rotuladores humanos e o antes × depois do juiz quando há 2ª rodada. Mecanismo conhecido da memória: o fato de um
+  turno anterior que não chega à resposta (`docs/FAILURE_MODES.md`, modo `memory`); a rota do seguimento curto não
+  está entre as falhas de memória desta rodada. Corrigir pede o caso a caso do modo `memory` e uma rodada ao vivo do
+  split `memory`.
 - **Fora desta entrega:** a central `get-ajuda` (índice montado por JavaScript) entrou só pelos 3 artigos de erro ADQ
   (`docs/SOURCES.md`); manuais em PDF das maquininhas não foram ingeridos. Pedido de dado de outro lojista é recusado
   na entrada pelo guardrail, antes de qualquer tool, com a frase neutra de toda recusa (escolha registrada na SPEC,
